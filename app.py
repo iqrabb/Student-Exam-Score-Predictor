@@ -3,6 +3,8 @@ import pandas as pd
 import joblib
 import os
 
+from pathlib import Path
+
 # ==================================================
 # Page Config
 # ==================================================
@@ -160,10 +162,18 @@ label{
 # Load Model
 # ==================================================
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "student_exam_predictor.pkl")
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "student_exam_predictor.pkl"
 
-model = joblib.load(MODEL_PATH)
+try:
+    model = joblib.load(MODEL_PATH)
+except FileNotFoundError:
+    st.error("Model file student_exam_predictor.pkl was not found beside app.py.")
+    st.stop()
+except Exception as exc:
+    st.error("The model file could not be loaded. Check that it is a valid, compatible artifact.")
+    st.caption(f"Technical detail: {exc}")
+    st.stop()
 
 # ==================================================
 # Sidebar
