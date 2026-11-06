@@ -289,7 +289,7 @@ if st.button("🎯 Predict Exam Score"):
 
     })
 
-    prediction = model.predict(data)[0]
+    prediction = float(model.predict(data)[0])
 
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">📊 Prediction Result</div>', unsafe_allow_html=True)
@@ -303,7 +303,7 @@ if st.button("🎯 Predict Exam Score"):
         )
 
     with col2:
-        st.progress(min(int(prediction), 100))
+        st.progress(max(0, min(int(prediction), 100)))
 
         if prediction >= 90:
             st.success("🌟 Outstanding Performance!")
